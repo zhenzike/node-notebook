@@ -1,0 +1,8 @@
+{
+    "name": "npn-tool",
+    "version": "1.0.0",
+    "main": "index.js",
+    "description": "提供格式化世时间,HTMLEscape相关的功能",
+    "keywords": ["npm-tool"],
+    "license": "ISC"
+}
