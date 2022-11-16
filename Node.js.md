@@ -1842,7 +1842,7 @@ app.listen(80,()=>{
 
 
 
-#### 4.3.3 express内置的中间件
+#### 4.3.3 express内置的中间件【重要】
 
 - express.static 快速托管静态资源的内置中间件，例如:HTML文件、图片、CSS样式等（无兼容性)
 - express.json 解析JSON格式的请求体数据（有兼容性，仅在4.16.0+版本中可用)
@@ -1852,7 +1852,7 @@ app.listen(80,()=>{
 
 ```js
 //配置解析applicationljson格式数据的内置中间件
-app.use(express.json())
+app.use(express.json())  //想要解析接收的数据，必须在路由之前挂载该中间件
 
 //配置解析application/x-ww-form-urlencoded格式数据的内置中间件
 app.use(express.urlencoded({extended: false }))//固定写法
@@ -2236,6 +2236,8 @@ mysql模块是托管于npm 上的第三方模块。它提供了在Node.js项目�
 
 ```
 npm i mysql
+推荐安装mysql2
+npm i musql2
 ```
 
 
@@ -2278,7 +2280,7 @@ db.query('select 1',(err,results)=>{
 查询text表中所有的数据：
 
 ```js
-db.query('SELECT * FROM account',(err,results)=>{
+db.query('SELECT * FROM text',(err,results)=>{
     //查询失败
     if(err){return console.log(err,message);}
     //查询成功

@@ -16,8 +16,8 @@ server.on('request',(req,res)=>{
 })
 
 //启动服务器
-server.listen(80,()=>{
-    console.log('server running at http://127.0.0.1:80');
+server.listen(8080,()=>{
+    console.log('server running at http://127.0.0.1:8080');
 })
 
     
