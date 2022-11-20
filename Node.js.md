@@ -250,6 +250,7 @@ path模块是Node.js 官方提供的、用来处理路径的模块。它提供�
 
 - path.join()方法，用来**将多个路径片段拼接成一个完整的路径字符串**
 - path.basename()方法，用来从路径字符串中，将文件名解析出来
+- path.extname(String)   **获取文件后缀名**
 
 <span style="color:red">注意</span>：如果要在JavaScript 代码中，使用path模块来处理路径，需要先导入它:
 
@@ -259,7 +260,7 @@ const path=require('path');
 
 ### 4.1 路径拼接-path.jion()
 
-使用path.join0方法，可以把多个路径片段拼接为完整的路径字符串:
+使用path.join()方法，可以把多个路径片段拼接为完整的路径字符串:
 
 ```javascript
 path.join([....paths]);
@@ -314,6 +315,53 @@ path.extname(path)
 
 - path < string>必选参数，表示一个路径的字符串
 - 返回: < string>返回得到的扩展名字符串
+
+### 4.4 动态生成目录
+
+使用：
+
+```js
+const directory=require('../dao/create_directory')
+directory.directory('../files_data/'+url,err=>{
+            console.log(err);
+        })
+```
+
+代码：
+
+```js
+const fs = require('fs');
+const path = require('path')
+//百度如何动态创建目录
+exports.directory = function (pathname, cb) {
+    // path.isAbsolute() 方法确定 path 是否为绝对路径
+    pathname = path.isAbsolute(pathname) ? pathname : path.join(__dirname, pathname)
+    //获取从当前文件夹到目标文件的相对路径
+    pathname = path.relative(__dirname, pathname)
+    let fileloader = pathname.split(path.sep)//将特定文字分隔符 ‘\\' 或 ‘/' 的字符串转换成数组对象。'foo/bar/baz'.split(path.sep)---->['foo', 'bar', 'baz']
+    let pre = ''
+    fileloader.forEach(k => {
+        try {
+            let _stat = fs.statSync(path.join(__dirname, pre, k));//返回有关给定文件路径的信息
+            let hasMkdir = _stat && _stat.isDirectory();
+            if (hasMkdir) {
+                cb
+            }
+        } catch (err) {
+            try {
+                fs.mkdirSync(path.join(__dirname, pre, k));
+                cb && cb(err)
+            } catch (err) {
+                cb && cb(err)
+            }
+        }
+        pre=path.join(pre,k)
+    })
+}
+
+```
+
+
 
 ## 时钟模块拆分案例
 
