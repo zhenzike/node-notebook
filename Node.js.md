@@ -2261,7 +2261,20 @@ res.setHeader( 'Access-Control-Allow-Methods','*')
 
 预检请求的特点: 客户端与服务器之间会发生两次请求，OPTION预检请求成功之后，才会发起真正的请求。
 
+### 4.7 socket.io与cors
 
+服务端：
+
+```js
+const socketSer = app.listen(8082)
+var io = require('socket.io')(socketSer,{cors:true})  //注意cors:true,必须添加否则请求会被cors拦截
+
+io.on("connection", (socket) => {
+    console.log(1);  //当客户端与服务器成功连接时，触发connection事件
+});
+```
+
+客户端见官网
 
 # 三、数据库与身份认证
 
