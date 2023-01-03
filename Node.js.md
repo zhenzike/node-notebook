@@ -2760,9 +2760,9 @@ eyJhbGci0iJIUzI1NiIsInRScCI6IkpXVCJ9.eyJpZCI6MSwidXNIcmShbwUiOiJhZG1pbiIsInBhc3N
 
 #### 2.5.4 JWT的使用方式
 
-客户端收到服务器返回的WT之后，通常会将它**储存在localStorage 或sessionStorage** 中.
+客户端收到服务器返回的JWT之后，通常会将它**储存在localStorage 或sessionStorage** 中.
 
-此后，客户端每次与服务器通信，都要带上这个WT的字符串，从而进行身份认证。推荐的做法是**把JWT 放在HTTP请求头的Authorization字段中**，格式如下:
+此后，客户端每次与服务器通信，都要带上这个JWT的字符串，从而进行身份认证。推荐的做法是**把JWT 放在HTTP请求头的Authorization字段中**，格式如下:
 
 ```js
 Authorization:BEARER <token>
@@ -2785,9 +2785,9 @@ npm i jsonwebtoken express-jwt
 
 **(2) 定义secret密钥**
 
-为了**保证WT字符串的安全性**，防止WT字符串在网络传输过程中被别人破解，我们需要专门定义一个用于加密和解密的secret密钥:
+为了**保证JWT字符串的安全性**，防止JWT字符串在网络传输过程中被别人破解，我们需要专门定义一个用于加密和解密的secret密钥:
 
-- 当生成WT字符串的时候，需要使用secret密钥对用户的信息==**进行加密**==，最终得到加密好的WT字符串
+- 当生成JWT字符串的时候，需要使用secret密钥对用户的信息==**进行加密**==，最终得到加密好的JWT字符串
 - 当把JWT字符串解析还原成JSON对象的时候，需要使用secret密钥==**进行解密**==
 
 ```js
@@ -2798,7 +2798,7 @@ const secreKey='guojuxia';
 
 **(3)  在登录成功后生成JWT字符串**
 
-调用jsonwebtoken包提供的 ==**sign() **==方法，将用户的信息加密成WT字符串，响应给客户端:
+调用jsonwebtoken包提供的 ==**sign() **==方法，将用户的信息加密成JWT字符串，响应给客户端:
 
 ```js
 // 登录接口
@@ -2836,9 +2836,14 @@ app.post('/api/login', function (req, res) {
 
 ```js
 //expressJWT( { secret: secretKey }）就是用来解析 Token的中间件
-//.unless({ path:[/^\/api1//] }）用来指定哪些接口不需要访问权限
+//.unless({ path:[/^\/api\//] }）用来指定哪些接口不需要访问权限
 // 注意：只要配置成功了 express-jwt 这个中间件，就可以把解析出来的用户信息，挂载到 req.user 属性上
 app.use(expressJWT({ secret: secretKey }).unless({ path: [/^\/api\//] }))
+
+//新版本写法为
+const expressJWT = require('express-jwt')
+//最新版本需要配置algorithms算法，一般默认是HS256
+app.use(expressJWT.expressjwt({ secret: secretKey,algorithms:['HS256'] }).unless({ path: [/^\/api\//] }))
 ```
 
 
